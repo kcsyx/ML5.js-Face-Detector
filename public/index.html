@@ -96,6 +96,8 @@
     </div>
 </body>
 <script>
+    var audio = new Audio('duh.mp3');
+
     const result = document.getElementById('result'); // The result tag in the HTML
     const probability = document.getElementById('probability'); // The probability tag in the HTML
     const endResult = document.getElementById('endResult');
@@ -127,6 +129,9 @@
         classifier.classify(document.getElementById('filePreview'), () => {
             $(".initial").hide();
         }).then((results) => {
+            if (results[0].label == 'TARD') {
+                audio.play();
+            };
             $(".post").show();
             var probabilitypercent = (results[0].confidence * 100).toFixed(2)
             endResult.innerText = "YOU ARE " + probabilitypercent + "% " + results[0].label + "!";
@@ -137,6 +142,8 @@
     };
 
     function goBack() {
+        audio.pause();
+        audio.currentTime = 0;
         $('#file').val('');
         $("#uploadButton").hide();
         $("#filePreview").hide();
